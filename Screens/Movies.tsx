@@ -2,17 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import { movieApi } from '../api';
 
-export default ({ navigation }: any) => {
-	const [nowPlaying, setNowPlaying] = useState({
-		movies: [],
-		error: null
-	});
+export default () => {
+	// const [nowPlaying, setNowPlaying] = useState({
+	// 	movies: [],
+	// 	error: null
+	// });
 
 	const getData = async () => {
-		const {
-			data: { results }
-		} = await movieApi.nowPlaying();
-		console.log(results);
+		const [nowPlaying, error] = await movieApi.nowPlaying();
+		const [popular, popularError] = await movieApi.popular();
+		console.log(popular, popularError);
 	};
 	useEffect(() => {
 		getData();
