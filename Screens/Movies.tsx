@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Button } from 'react-native';
 
 export default ({ navigation }: any) => {
@@ -7,9 +7,9 @@ export default ({ navigation }: any) => {
 			<Text>Movies</Text>
 			<Button
 				onPress={() => {
-					navigation.navigate('Search');
+					navigation.navigate('Detail');
 				}}
-				title="someWhere!!"
+				title="someWhe!!"
 			></Button>
 		</View>
 	);

@@ -8,7 +8,7 @@ import Tabs from './Tabs';
 const stack = createStackNavigator();
 
 const StackNav = () => (
-	<stack.Navigator>
+	<stack.Navigator screenOptions={{ headerShown: false }}>
 		<stack.Screen name="Tabs" component={Tabs}></stack.Screen>
 		<stack.Screen name="Detail" component={Detail}></stack.Screen>
 	</stack.Navigator>
