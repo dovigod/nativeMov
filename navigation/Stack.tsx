@@ -8,9 +8,14 @@ import Tabs from './Tabs';
 const stack = createStackNavigator();
 
 const StackNav = () => (
-	<stack.Navigator screenOptions={{ headerShown: false }}>
+	<stack.Navigator
+		screenOptions={{
+			presentation: 'modal',
+			headerBackTitleVisible: false // 뒤로갈 페이지 있을때 이름 x
+		}}
+	>
 		<stack.Screen name="Tabs" component={Tabs}></stack.Screen>
-		<stack.Screen name="Detail" component={Detail}></stack.Screen>
+		<stack.Screen name="Detail" component={Detail} options={{}}></stack.Screen>
 	</stack.Navigator>
 );
 

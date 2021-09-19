@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, StatusBar } from 'react-native';
 import * as Font from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { Asset } from 'expo-asset';
@@ -36,9 +35,12 @@ export default function App() {
 		setIsReady(true);
 	};
 	return isReady ? (
-		<NavigationContainer>
-			<StackNav />
-		</NavigationContainer>
+		<>
+			<NavigationContainer>
+				<StackNav />
+			</NavigationContainer>
+			<StatusBar barStyle="dark-content" />
+		</>
 	) : (
 		<AppLoading startAsync={loadAssets} onFinish={onFinish} onError={(e) => console.log(e)} />
 	);
