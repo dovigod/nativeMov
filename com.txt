@@ -1,0 +1,7 @@
+//  "react-native-gesture-handler": "^1.10.3",
+"react-native-safe-area-context": "^3.3.2",
+	"react-native-reanimated": "^2.2.2",
+    "@react-native-community/masked-view": "^0.1.11",
+    	"@react-navigation/stack": "^6.0.7",
+        "react-native-screens": "^3.7.2",
+        	"react-native-web": "~0.13.12"
