@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Button, Dimensions, StyleSheet } from 'react-native';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 import Swiper from 'react-native-web-swiper';
+import { movieApi } from '../api';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -16,20 +17,45 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ({ navigation }: any) => {
+const Header = styled.View`
+	height: ${height / 3}px;
+`;
+
+const Section = styled.View`
+	height: 100%;
+	background-color: red;
+`;
+
+export default () => {
+	const [movies, setMovies] = useState({
+		results: [],
+		error: null
+	});
+	const getData = async () => {
+		const [results, error] = await movieApi.discover();
+		setMovies({
+			results,
+			error
+		});
+	};
+
+	useEffect(() => {
+		getData();
+	}, []);
+
 	return (
-		<View style={styles.header}>
+		<Header style={styles.header}>
 			<Swiper>
-				<View style={styles.section}>
+				<Section style={styles.section}>
 					<Text>Favorites 1</Text>
-				</View>
-				<View style={styles.section}>
+				</Section>
+				<Section style={styles.section}>
 					<Text>Favorites 2</Text>
-				</View>
-				<View style={styles.section}>
+				</Section>
+				<Section style={styles.section}>
 					<Text>Favorites 3</Text>
-				</View>
+				</Section>
 			</Swiper>
-		</View>
+		</Header>
 	);
 };
