@@ -4,7 +4,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import { getImage } from '../../api';
 import Poster from '../../components/Poster';
 import Votes from '../Votes';
-
+import { trimText } from '../../utils';
 interface slideInput {
 	id: number;
 	title: string;
@@ -56,20 +56,20 @@ const Button = styled.View`
 	border-radius: 3px;
 `;
 const ButtonText = styled.Text`
-	color: white;
+	color: #f4f4f4;
 `;
 
 const Slide = ({ id, title, backgroundImage, votes, overview, poster }: slideInput) => (
 	<Container>
 		<BG source={{ uri: getImage(backgroundImage) }} />
 		<Content>
-			<Poster url={getImage(poster)} />
+			<Poster url={poster} />
 			<Data>
-				<Titlem>{title}</Titlem>
+				<Titlem>{trimText(title, 40)}</Titlem>
 				<VotesContainer>
 					<Votes votes={votes} />
 				</VotesContainer>
-				<Overview>{overview.slice(0, 30) + '...'}</Overview>
+				<Overview>{trimText(overview, 30)}</Overview>
 				<TouchableOpacity>
 					<Button>
 						<ButtonText>View Details</ButtonText>

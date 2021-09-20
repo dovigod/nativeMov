@@ -5,25 +5,25 @@ import Swiper from 'react-native-web-swiper';
 import Slide from '../../components/Movies/Slide';
 import Title from '../../components/Title';
 import VerticalScroll from '../../components/VerticalScroll';
+import Horizontal from '../../components/Horizontal';
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('screen');
 
 const Container = styled.View``;
 
 const SliderContainer = styled.View`
-	width: ${WIDTH}px;
+	width: 100%;
 	height: ${HEIGHT / 4}px;
 	margin-bottom: 50px;
 `;
 
-export default ({ loading, nowPlaying, popular }: any) => (
+export default ({ loading, nowPlaying, popular, upcoming }: any) => (
 	<ScrollView
 		style={{
-			backgroundColor: 'black'
+			backgroundColor: '#D2303D'
 		}}
 		contentContainerStyle={{
-			justifyContent: loading ? 'center' : 'flex-start',
-			flex: 1
+			justifyContent: loading ? 'center' : 'flex-start'
 		}}
 	>
 		{nowPlaying.length == 0 ? (
@@ -49,7 +49,17 @@ export default ({ loading, nowPlaying, popular }: any) => (
 				</SliderContainer>
 				<Container>
 					<Title title={'now playing!'}></Title>
-					<ScrollView horizontal={true}>
+					<ScrollView
+						horizontal={true}
+						showsHorizontalScrollIndicator={false}
+						contentContainerStyle={{
+							paddingLeft: 30
+						}}
+						style={{
+							marginTop: 20,
+							marginBottom: 10
+						}}
+					>
 						{popular.map((movie: any) => {
 							return (
 								<VerticalScroll
@@ -61,6 +71,19 @@ export default ({ loading, nowPlaying, popular }: any) => (
 							);
 						})}
 					</ScrollView>
+					<Title title={'Coming Soon'}></Title>
+					{upcoming.map((movie: any) => {
+						return (
+							<Horizontal
+								key={movie.id}
+								id={movie.id}
+								title={movie.original_title}
+								votes={movie.vote_average}
+								poster={movie.poster_path}
+								overview={movie.overview}
+							/>
+						);
+					})}
 				</Container>
 			</>
 		)}

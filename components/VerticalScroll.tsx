@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { TouchableOpacity } from 'react-native';
 import { getImage } from '../api';
 import Poster from './Poster';
 import Votes from './Votes';
+import { trimText } from '../utils';
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
 	margin-left: 30px;
 `;
 
@@ -15,8 +17,8 @@ const Title = styled.Text`
 const VerticalScroll = ({ poster, title, votes }: any) => {
 	return (
 		<Container>
-			<Poster url={getImage(poster)} />
-			<Title>{title.length > 13 ? title.slice(0, 13) + '...' : title}</Title>
+			<Poster url={poster} />
+			<Title>{trimText(title, 13)}</Title>
 			<Votes votes={votes} />
 		</Container>
 	);
