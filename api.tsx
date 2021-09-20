@@ -38,3 +38,5 @@ export const tvApi = {
 	search: (query: any) => getAnything('/search/tv', { query }),
 	show: (id: any) => getAnything(`/tv/${id}`)
 };
+
+export const getImage = (path: string) => `https://image.tmdb.org/t/p/w500${path}`;

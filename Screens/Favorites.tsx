@@ -6,17 +6,6 @@ import { movieApi } from '../api';
 
 const { width, height } = Dimensions.get('screen');
 
-const styles = StyleSheet.create({
-	section: {
-		height: 100,
-		backgroundColor: 'red'
-	},
-	header: {
-		width: width,
-		height: height / 3
-	}
-});
-
 const Header = styled.View`
 	height: ${height / 3}px;
 `;
@@ -44,15 +33,15 @@ export default () => {
 	}, []);
 
 	return (
-		<Header style={styles.header}>
-			<Swiper>
-				<Section style={styles.section}>
+		<Header>
+			<Swiper controlsEnabled={false} loop timeout={3}>
+				<Section>
 					<Text>Favorites 1</Text>
 				</Section>
-				<Section style={styles.section}>
+				<Section>
 					<Text>Favorites 2</Text>
 				</Section>
-				<Section style={styles.section}>
+				<Section>
 					<Text>Favorites 3</Text>
 				</Section>
 			</Swiper>
