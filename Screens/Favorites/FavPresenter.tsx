@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, GestureResponderEvent, PanResponder, PanResponderGestureState } from 'react-native';
 import styled from 'styled-components/native';
 import { getImage } from '../../api';
 
@@ -29,10 +29,16 @@ const Poster = styled.Image`
 	height: 100%;
 `;
 const FavPresenter = ({ results }: any) => {
+	const panResponse = PanResponder.create({
+		onStartShouldSetPanResponder: () => true,
+		onPanResponderMove: (evt: GestureResponderEvent, gesture: PanResponderGestureState) => {
+			console.log('PanResponder hello');
+		}
+	});
 	return (
 		<Container>
 			{results.reverse().map((result: any) => (
-				<Card key={result.id}>
+				<Card key={result.id} {...panResponse.panHandlers}>
 					<Poster source={{ uri: getImage(result.poster_path) }} />
 				</Card>
 			))}
