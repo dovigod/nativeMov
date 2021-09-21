@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dimensions, GestureResponderEvent, PanResponder, PanResponderGestureState, Animated } from 'react-native';
 // import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
@@ -37,30 +37,61 @@ const styles = {
 	position: 'absolute'
 };
 const FavPresenter = ({ results }: any) => {
+	const [topIndex, setTopIndex] = useState(0);
 	const position = new Animated.ValueXY();
 	const panResponse = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onPanResponderMove: (evt: GestureResponderEvent, { dx, dy }: PanResponderGestureState) => {
 			position.setValue({ x: dx, y: dy });
+		},
+		onPanResponderRelease: () => {
+			Animated.spring(position, {
+				toValue: {
+					x: 0,
+					y: 0
+				},
+				useNativeDriver: true
+				// bounciness: 10,
+				// friction: 1
+			}).start(); // slowly goes to arg
 		}
 	});
 	return (
 		<Container>
-			{results.reverse().map((result: any) => (
-				<Animated.View
-					style={{
-						width: '90%',
-						height: HEIGHT / 1.5,
-						position: 'absolute',
-						top: 80,
-						transform: [...position.getTranslateTransform()]
-					}}
-					key={result.id}
-					{...panResponse.panHandlers}
-				>
-					<Poster source={{ uri: getImage(result.poster_path) }} />
-				</Animated.View>
-			))}
+			{results.reverse().map((result: any, index: number) => {
+				if (index === topIndex) {
+					return (
+						<Animated.View
+							style={{
+								width: '90%',
+								height: HEIGHT / 1.5,
+								position: 'absolute',
+								top: 80,
+								transform: [...position.getTranslateTransform()],
+								zIndex: 1
+							}}
+							key={result.id}
+							{...panResponse.panHandlers}
+						>
+							<Poster source={{ uri: getImage(result.poster_path) }} />
+						</Animated.View>
+					);
+				}
+				return (
+					<Animated.View
+						style={{
+							width: '90%',
+							height: HEIGHT / 1.5,
+							position: 'absolute',
+							top: 80
+						}}
+						key={result.id}
+						{...panResponse.panHandlers}
+					>
+						<Poster source={{ uri: getImage(result.poster_path) }} />
+					</Animated.View>
+				);
+			})}
 		</Container>
 	);
 };
