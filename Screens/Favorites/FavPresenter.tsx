@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dimensions, GestureResponderEvent, PanResponder, PanResponderGestureState, Animated } from 'react-native';
-// import Animated from 'react-native-reanimated';
+
 import styled from 'styled-components/native';
 import { getImage } from '../../api';
 
@@ -38,22 +38,44 @@ const styles = {
 };
 const FavPresenter = ({ results }: any) => {
 	const [topIndex, setTopIndex] = useState(0);
+
+	const nextCard = () => setTopIndex((cur) => cur + 1);
+
 	const position = new Animated.ValueXY();
 	const panResponse = PanResponder.create({
 		onStartShouldSetPanResponder: () => true,
 		onPanResponderMove: (evt: GestureResponderEvent, { dx, dy }: PanResponderGestureState) => {
 			position.setValue({ x: dx, y: dy });
 		},
-		onPanResponderRelease: () => {
-			Animated.spring(position, {
-				toValue: {
-					x: 0,
-					y: 0
-				},
-				useNativeDriver: true
-				// bounciness: 10,
-				// friction: 1
-			}).start(); // slowly goes to arg
+		onPanResponderRelease: (evt, { dx, dy }) => {
+			if (dx >= 250) {
+				console.log(topIndex);
+				Animated.spring(position, {
+					toValue: {
+						x: WIDTH + 100,
+						y: dy
+					},
+					useNativeDriver: true
+				}).start(nextCard);
+			} else if (dx <= -250) {
+				Animated.spring(position, {
+					toValue: {
+						x: -WIDTH - 100,
+						y: dy
+					},
+					useNativeDriver: true
+				}).start(nextCard);
+			} else {
+				Animated.spring(position, {
+					toValue: {
+						x: 0,
+						y: 0
+					},
+					useNativeDriver: true
+					// bounciness: 10,
+					// friction: 1
+				}).start(); // slowly goes to arg
+			}
 		}
 	});
 	const rotationValues = position.x.interpolate({
@@ -73,8 +95,12 @@ const FavPresenter = ({ results }: any) => {
 	});
 	return (
 		<Container>
-			{results.reverse().map((result: any, index: number) => {
+			{results.map((result: any, index: number) => {
+				if (index < topIndex) {
+					return null;
+				}
 				if (index === topIndex) {
+					console.log(topIndex, result.title);
 					return (
 						<Animated.View
 							style={{
@@ -83,7 +109,7 @@ const FavPresenter = ({ results }: any) => {
 								position: 'absolute',
 								top: 80,
 								transform: [{ rotate: rotationValues }, ...position.getTranslateTransform()],
-								zIndex: 1
+								zIndex: results.length * 2 - index
 							}}
 							key={result.id}
 							{...panResponse.panHandlers}
@@ -99,7 +125,7 @@ const FavPresenter = ({ results }: any) => {
 								height: HEIGHT / 1.5,
 								position: 'absolute',
 								top: 80,
-								zIndex: -index,
+								zIndex: results.length * 2 - index,
 								opacity: secondCardOpacity,
 								transform: [
 									{
@@ -114,6 +140,7 @@ const FavPresenter = ({ results }: any) => {
 						</Animated.View>
 					);
 				}
+
 				return (
 					<Animated.View
 						style={{
@@ -121,7 +148,7 @@ const FavPresenter = ({ results }: any) => {
 							height: HEIGHT / 1.5,
 							position: 'absolute',
 							top: 80,
-							zIndex: -index,
+							zIndex: results.length * 2 - index,
 							opacity: 0
 						}}
 						key={result.id}
